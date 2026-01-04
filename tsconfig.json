@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    /* --- 1. Configuración del Proyecto --- */
+    "rootDir": "./src",
+    "outDir": "./dist",
+    
+    /* --- 2. Configuración del Entorno (Node.js moderno) --- */
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    
+    /* --- 3. Tipado Estricto (MODO DIOS) --- */
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    
+    /* --- 4. Calidad de Código --- */
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+
+    /* --- 5. Interoperabilidad --- */
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "**/*.test.ts"]
+}
