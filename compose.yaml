@@ -11,9 +11,22 @@ services:
     networks:
       - nexus_net
 
+  database:  
+    image: postgres:latest
+    container_name: database
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=$POSTGRES_PASSWORD
+    ports:
+      - "5432:5432"
+    volumes:
+      - database_data:/var/lib/postgresql
+    networks:
+      - nexus_net
 
 volumes: 
   redis_data:
+  database_data:
 
 networks: 
   nexus_net:
