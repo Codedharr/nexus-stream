@@ -38,7 +38,7 @@ app.post('/ingest', {
 
     await pipeline.exec();
 
-    console.log(`✅ Lote recibido: ${logs.length} logs procesados.`);
+    console.log(`Lote recibido: ${logs.length} logs procesados.`);
     
     // Respondemos rápido
     return reply.status(202).send({ 
@@ -53,7 +53,7 @@ const start = async () => {
     // Escuchamos en el puerto 3000
     // host: '0.0.0.0' es vital para que funcione dentro de Docker después
     await server.listen({ port: 3000, host: '0.0.0.0' });
-    console.log('🚀 Server running on http://localhost:3000');
+    console.log('Server running on http://localhost:3000');
   } catch (err) {
     server.log.error(err);
     process.exit(1);

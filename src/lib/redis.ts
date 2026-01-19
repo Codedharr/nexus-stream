@@ -5,9 +5,9 @@ const REDIS_URL = process.env.REDIS_URL || "redis://localhost:6379/0";
 export const redis = new Redis(REDIS_URL, { maxRetriesPerRequest: null });
 
 redis.on('connect', () => {
-  console.log('🔌 Conectado a Redis correctamente');
+  console.log('Conectado a Redis correctamente');
 });
 
 redis.on('error', (err) => {
-  console.error('❌ Error en conexión Redis:', err);
+  console.error('Error en conexión Redis:', err);
 });
