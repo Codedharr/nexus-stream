@@ -53,7 +53,6 @@ main()
     process.exit(1);
   })
   .finally(async () => {
-    // Buena práctica: Cerrar conexiones si el script muere
     await prisma.$disconnect();
     await redis.quit();
   });
