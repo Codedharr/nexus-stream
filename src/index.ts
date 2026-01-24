@@ -1,24 +1,20 @@
-// Importamos fastify 
 import Fastify from 'fastify';
 import { serializerCompiler, validatorCompiler, ZodTypeProvider } from 'fastify-type-provider-zod';
 import { prisma } from './lib/prisma.js';
-import { logSchema, querySchema } from './schemas/log.schema.js'; // Ojo a la extensión .js (cosas de ESM)
-import './lib/redis.js'; // Importamos para activar la conexión (efecto secundario)
+import { logSchema, querySchema } from './schemas/log.schema.js'; 
+import './lib/redis.js'; 
 import { redis } from './lib/redis.js';
 import { z } from 'zod';
+import authPlugin from './plugins/auth.js';
 
-
-//1. Inicializamos la instancia de Fastify
 const server = Fastify({logger: true})
 
-// Cambiamos la validación interna de Fastify por ZOD
 server.setValidatorCompiler(validatorCompiler);
 server.setSerializerCompiler(serializerCompiler);
 
 const app = server.withTypeProvider<ZodTypeProvider>()
+await app.register(authPlugin);
 
-//2. Definimos una ruta para conocer el estado del servidor
-// 2. Definimos la ruta de ingestión
 app.post('/ingest', { 
   schema: {
     body: z.array(logSchema) 
@@ -29,7 +25,6 @@ app.post('/ingest', {
 
     const pipeline = redis.pipeline();
 
-    // Iteramos y metemos al tubo (sin await aquí)
     logs.forEach(log => {
         pipeline.lpush('logs_queue', JSON.stringify(log));
     });
@@ -88,11 +83,10 @@ app.get('/logs', {
     }
 });
 
-// 3. Función de arranque
 const start = async () => {
   try {
     // Escuchamos en el puerto 3000
-    // host: '0.0.0.0' es vital para que funcione dentro de Docker después
+    // host: '0.0.0.0' es importante para que funcione dentro de Docker
     await server.listen({ port: 3000, host: '0.0.0.0' });
     console.log('Server running on http://localhost:3000');
   } catch (err) {
